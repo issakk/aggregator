@@ -21,6 +21,3 @@ def send_wechat_message(content):
         print(f"Failed to send message. Status code: {response.status_code}")
         print(response.text)
 
-# 示例调用
-content = 'hello world'
-send_wechat_message(key, content)
