@@ -14,6 +14,7 @@ import sys
 import time
 
 import crawl
+import notify
 import executable
 import push
 import utils
@@ -32,7 +33,7 @@ PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 DATA_BASE = os.path.join(PATH, "data")
 
 
-def assign(
+assign(
     bin_name: str,
     domains_file: str = "",
     overwrite: bool = False,
@@ -42,7 +43,7 @@ def assign(
     num_threads: int = 0,
     **kwargs,
 ) -> list[TaskConfig]:
-    def load_exist(username: str, gist_id: str, access_token: str, filename: str) -> list[str]:
+    load_exist(username: str, gist_id: str, access_token: str, filename: str) -> list[str]:
         if not filename:
             return []
 
@@ -78,7 +79,7 @@ def assign(
 
         return [links[i] for i in range(len(links)) if results[i][0] and not results[i][1]]
 
-    def parse_domains(content: str) -> dict:
+    parse_domains(content: str) -> dict:
         if not content or not isinstance(content, str):
             logger.warning("cannot found any domain due to content is empty or not string")
             return {}
@@ -195,8 +196,8 @@ def assign(
     return tasks
 
 
-def aggregate(args: argparse.Namespace) -> None:
-    def parse_gist_link(link: str) -> tuple[str, str]:
+aggregate(args: argparse.Namespace) -> None:
+    parse_gist_link(link: str) -> tuple[str, str]:
         # 提取 gist 用户名及 id
         words = utils.trim(link).split("/", maxsplit=1)
         if len(words) != 2:
@@ -351,7 +352,7 @@ def aggregate(args: argparse.Namespace) -> None:
         sys.exit(1)
 
     logger.info(f"found {len(nodes)} proxies, save it to {list(records.values())}")
-
+    notify.send_wechat_message(f"found {len(nodes)} proxies, save it to {list(records.values())}")
     life, traffic = max(0, args.life), max(0, args.flow)
     if life > 0 or traffic > 0:
         # 过滤出新的订阅并检查剩余流量和过期时间是否满足要求
@@ -409,7 +410,7 @@ def aggregate(args: argparse.Namespace) -> None:
 
 
 class CustomHelpFormatter(argparse.HelpFormatter):
-    def _format_action_invocation(self, action):
+    _format_action_invocation(self, action):
         if action.choices:
             parts = []
             if action.option_strings:
