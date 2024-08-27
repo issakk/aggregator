@@ -34,6 +34,10 @@ DATA_BASE = os.path.join(PATH, "data")
 
 def send_wechat_message(content):
     key = '${{ secrets.WECHAT_KEY }}'
+    if my_secret:
+         logger.info(f"The secret is: {key}")
+    else:
+         logger.info("Secret is not set.")
     url = f'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={key}'
     headers = {
         'Content-Type': 'application/json'
@@ -48,10 +52,10 @@ def send_wechat_message(content):
     response = requests.post(url, headers=headers, json=data)
     
     if response.status_code == 200:
-        print("Message sent successfully!")
+         logger.info("Message sent successfully!")
     else:
-        print(f"Failed to send message. Status code: {response.status_code}")
-        print(response.text)
+         logger.info(f"Failed to send message. Status code: {response.status_code}")
+         logger.info(response.text)
 
 
 def assign(
