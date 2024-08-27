@@ -352,7 +352,7 @@ def aggregate(args: argparse.Namespace) -> None:
         sys.exit(1)
 
     logger.info(f"found {len(nodes)} proxies, save it to {list(records.values())}")
-    notify.send_wechat_message(f"found {len(nodes)} proxies, save it to {list(records.values())}")
+    notify.send_wechat_message("11111")
     life, traffic = max(0, args.life), max(0, args.flow)
     if life > 0 or traffic > 0:
         # 过滤出新的订阅并检查剩余流量和过期时间是否满足要求
