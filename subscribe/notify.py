@@ -1,7 +1,7 @@
 import requests
 
 def send_wechat_message(content):
-    key = os.environ.get('WECHAT_KEY')
+    key = '${{ secrets.WECHAT_KEY }}'
     url = f'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={key}'
     headers = {
         'Content-Type': 'application/json'
