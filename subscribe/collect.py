@@ -15,7 +15,7 @@ import time
 
 import crawl
 import executable
-import notify
+import requests
 import push
 import utils
 import workflow
@@ -31,6 +31,27 @@ import subconverter
 PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 DATA_BASE = os.path.join(PATH, "data")
+
+def send_wechat_message(content):
+    key = '${{ secrets.WECHAT_KEY }}'
+    url = f'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={key}'
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    data = {
+        "msgtype": "text",
+        "text": {
+            "content": content
+        }
+    }
+    
+    response = requests.post(url, headers=headers, json=data)
+    
+    if response.status_code == 200:
+        print("Message sent successfully!")
+    else:
+        print(f"Failed to send message. Status code: {response.status_code}")
+        print(response.text)
 
 
 def assign(
@@ -352,7 +373,7 @@ def aggregate(args: argparse.Namespace) -> None:
         sys.exit(1)
 
     logger.info(f"found {len(nodes)} proxies, save it to {list(records.values())}")
-    notify.send_wechat_message("11111")
+    send_wechat_message("11111")
     life, traffic = max(0, args.life), max(0, args.flow)
     if life > 0 or traffic > 0:
         # 过滤出新的订阅并检查剩余流量和过期时间是否满足要求
