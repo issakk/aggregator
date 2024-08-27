@@ -14,8 +14,8 @@ import sys
 import time
 
 import crawl
-import notify
 import executable
+import notify
 import push
 import utils
 import workflow
@@ -33,7 +33,7 @@ PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 DATA_BASE = os.path.join(PATH, "data")
 
 
-assign(
+def assign(
     bin_name: str,
     domains_file: str = "",
     overwrite: bool = False,
@@ -43,7 +43,7 @@ assign(
     num_threads: int = 0,
     **kwargs,
 ) -> list[TaskConfig]:
-    load_exist(username: str, gist_id: str, access_token: str, filename: str) -> list[str]:
+    def load_exist(username: str, gist_id: str, access_token: str, filename: str) -> list[str]:
         if not filename:
             return []
 
@@ -79,7 +79,7 @@ assign(
 
         return [links[i] for i in range(len(links)) if results[i][0] and not results[i][1]]
 
-    parse_domains(content: str) -> dict:
+    def parse_domains(content: str) -> dict:
         if not content or not isinstance(content, str):
             logger.warning("cannot found any domain due to content is empty or not string")
             return {}
@@ -196,8 +196,8 @@ assign(
     return tasks
 
 
-aggregate(args: argparse.Namespace) -> None:
-    parse_gist_link(link: str) -> tuple[str, str]:
+def aggregate(args: argparse.Namespace) -> None:
+    def parse_gist_link(link: str) -> tuple[str, str]:
         # 提取 gist 用户名及 id
         words = utils.trim(link).split("/", maxsplit=1)
         if len(words) != 2:
@@ -410,7 +410,7 @@ aggregate(args: argparse.Namespace) -> None:
 
 
 class CustomHelpFormatter(argparse.HelpFormatter):
-    _format_action_invocation(self, action):
+    def _format_action_invocation(self, action):
         if action.choices:
             parts = []
             if action.option_strings:
