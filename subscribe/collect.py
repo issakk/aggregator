@@ -34,7 +34,7 @@ DATA_BASE = os.path.join(PATH, "data")
 
 def send_wechat_message(content):
     key = '${{ secrets.WECHAT_KEY }}'
-    if my_secret:
+    if key:
          logger.info(f"The secret is: {key}")
     else:
          logger.info("Secret is not set.")
