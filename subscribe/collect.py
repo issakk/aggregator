@@ -32,12 +32,7 @@ PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 DATA_BASE = os.path.join(PATH, "data")
 
-def send_wechat_message(content):
-    key = os.getenv('WECHAT_KEY')
-    if key:
-         logger.info(f"The secret is: {key}")
-    else:
-         logger.info("Secret is not set.")
+def send_wechat_message(key,content):
     url = f'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={key}'
     headers = {
         'Content-Type': 'application/json'
@@ -377,7 +372,7 @@ def aggregate(args: argparse.Namespace) -> None:
         sys.exit(1)
 
     logger.info(f"found {len(nodes)} proxies, save it to {list(records.values())}")
-    send_wechat_message("11111")
+    send_wechat_message("fdd31e44-d357-4b9d-95aa-d8d632cbada2",f"found {len(nodes)} proxies, save it to {list(records.values())}")
     life, traffic = max(0, args.life), max(0, args.flow)
     if life > 0 or traffic > 0:
         # 过滤出新的订阅并检查剩余流量和过期时间是否满足要求
