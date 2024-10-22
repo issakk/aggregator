@@ -183,7 +183,19 @@ def fetchone(
 
     if not noproxies:
         try:
-            proxies = AirPort.decode(text=content, program=subconverter, special=SPECIAL_PROTOCOLS, throw=True)
+            index = url.rfind("/")
+            if index != -1:
+                name = url[index + 1 :]
+            else:
+                name = utils.random_chars(length=6, punctuation=False)
+
+            proxies = AirPort.decode(
+                text=content,
+                program=subconverter,
+                artifact=name,
+                special=SPECIAL_PROTOCOLS,
+                throw=True,
+            )
 
             # detect if it contains shared proxy nodes
             if detect(
